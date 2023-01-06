@@ -1,5 +1,5 @@
-## compile
-gcc linked_list.c -o linked_list
+## compile serial.c
+gcc serial.c -o serail
 
 ## run executable
-./linked_list
+./serial
