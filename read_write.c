@@ -164,6 +164,20 @@ int main() {
                         break;
                     }
             }
+            switch (caseNumber) {
+                case 0:
+                    memberOperations = m * 0.99;
+                    insertOperations = m * 0.005;
+                    deleteOperations = m * 0.005;
+                case 1:
+                    memberOperations = m * 0.9;
+                    insertOperations = m * 0.05;
+                    deleteOperations = m * 0.05;
+                case 2:
+                    memberOperations = m * 0.5;
+                    insertOperations = m * 0.25;
+                    deleteOperations = m * 0.25;
+            }
             clock_t start, end;
             double execution_time;
             start = clock();
