@@ -3,9 +3,11 @@
 #include <time.h>
 #include <math.h>
 #include <plot.h>
+#include <pthread.h>
 
 #define MAX_VALUE 65535
 #define NUM_THREADS 1
+pthread_rwlock_t rw_lock;
 
 // Define a node structure
 typedef struct node {
@@ -40,7 +42,7 @@ int main() {
         // Perform m random operations on the list
         int m = 10000;
 
-        int caseNumber = 3;
+        int caseNumber = 1;
         int memberOperations;
         int insertOperations;
         int deleteOperations;
@@ -68,19 +70,25 @@ int main() {
             switch (op) {
                 case 0:
                     if (memberOperations > 0) {
+                        pthread_rwlock_rdlock(&rw_lock);
                         Member(head, data);
+                        pthread_rwlock_unlock(&rw_lock);
                         memberOperations --;
                     }
                     break;
                 case 1:
                     if (insertOperations > 0) {
+                        pthread_rwlock_rdlock(&rw_lock);
                         Insert(&head, data);
+                        pthread_rwlock_unlock(&rw_lock);
                         insertOperations--;
                     }
                     break;
                 case 2:
                     if (deleteOperations > 0) {
+                        pthread_rwlock_rdlock(&rw_lock);
                         Delete(&head, data);
+                        pthread_rwlock_unlock(&rw_lock);
                         deleteOperations--;
                     }
                     break;
@@ -88,7 +96,7 @@ int main() {
         }
         end = clock();
         execution_time = ((double)(end - start)) / CLOCKS_PER_SEC *1000 ;
-        printf("execution_time is %f\n", execution_time);
+        // printf("execution_time is %f\n", execution_time);
         timeResults[r]=execution_time;
     }
     double sum;
