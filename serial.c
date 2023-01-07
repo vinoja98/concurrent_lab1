@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
-#include <plot.h>
+// #include <plot.h>
 
 #define MAX_VALUE 65535
 #define NUM_THREADS 1
@@ -171,11 +171,11 @@ void Delete(node** head, int data) {
 
 // Print the contents of the list
 void print_list(node* head) {
-    printf("List: ");
+    // printf("List: ");
     node* current = head;
     while (current != NULL) {
-        printf("%d ", current->data);
+        // printf("%d ", current->data);
         current = current->next;
     }
-    printf("\n");
+    // printf("\n");
 }
