@@ -12,9 +12,10 @@ typedef struct node {
 
 // Function prototypes
 int Member(node* head, int data);
-void Insert(node** head, int data);
-void Delete(node** head, int data);
+int Insert(node** head, int data);
+int Delete(node** head, int data);
 void print_list(node* head);
+pthread_mutex_t mutex_lock;
 
 int main() {
     // Seed the random number generator
@@ -24,16 +25,16 @@ int main() {
     node* head = NULL;
 
     // Populate the list with n random values
-    int n = 1000;
+    int n = 10;
     for (int i = 0; i < n; i++) {
         int data = rand() % MAX_VALUE;
         Insert(&head, data);
     }
 
     // Perform m random operations on the list
-    int m = 10000;
+    int m = 100;
 
-    int caseNumber = 1;
+    caseNumber = 1;
     int memberOperations;
     int insertOperations;
     int deleteOperations;
@@ -51,9 +52,7 @@ int main() {
             insertOperations = n * 0.25;
             deleteOperations = n * 0.25;
     }
-    clock_t start, end;
-    double execution_time;
-    start = clock();
+
     while (memberOperations + insertOperations + deleteOperations > 0) {
         int op = rand() % 3;
         int data = rand() % MAX_VALUE;
@@ -78,9 +77,6 @@ int main() {
                 break;
         }
     }
-    end = clock();
-    execution_time = ((double)(end - start)) / CLOCKS_PER_SEC;
-    printf("execution_time is %f\n", execution_time);
     // Print the final list
     print_list(head);
 
@@ -100,19 +96,20 @@ int Member(node* head, int data) {
 }
 
 // Insert a new value into the list
-void Insert(node** head, int data) {
+int Insert(node** head, int data) {
     if (Member(*head, data)) {
-        return;
+        return 0;
     }
 
     node* new_node = (node*) malloc(sizeof(node));
     new_node->data = data;
     new_node->next = *head;
     *head = new_node;
+    return 1;
 }
 
 // Delete a value from the list
-void Delete(node** head, int data) {
+int Delete(node** head, int data) {
     node* current = *head;
     node* prev = NULL;
     while (current != NULL) {
