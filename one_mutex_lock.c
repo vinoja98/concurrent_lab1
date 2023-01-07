@@ -40,7 +40,7 @@ void *threadOperation(void* thread_args) {
     node* head = args->head;
     while (memberOps + insertOps + deleteOps > 0) {
         int op = rand() % 3;
-        int data = rand() % MAX_VALUE;
+        int data = rand() % 10000;
         switch (op) {
             case 0:
                 if (memberOps > 0) {
@@ -73,8 +73,8 @@ void *threadOperation(void* thread_args) {
 int main() {
     int num_samples=97;
     float *timeResults = malloc(sizeof(int) * num_samples);
-    int caseNumber = 1;
-    while (caseNumber < 4) {
+    int caseNumber = 0;
+    while (caseNumber < 3) {
         for (int r = 0; r < num_samples; r++)
         {
         // Seed the random number generator
