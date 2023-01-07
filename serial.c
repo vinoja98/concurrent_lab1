@@ -4,13 +4,14 @@
 
 #define MAX_VALUE 65535
 
-
-typedef struct list_node_s {
+// Define a node structure
+typedef struct node {
     int data;
-    struct list_node_s* next;
-} 
+    struct node* next;
+} node;
 
-int Member(struct list_node_s* head_p, int value);
+// Function prototypes
+int Member(node* head, int data);
 void Insert(node** head, int data);
 void Delete(node** head, int data);
 void print_list(node* head);
@@ -22,15 +23,15 @@ int main() {
     // Create the head of the list
     node* head = NULL;
 
+    // Populate the list with n random values
     int n = 10;
     for (int i = 0; i < n; i++) {
         int data = rand() % MAX_VALUE;
         Insert(&head, data);
     }
 
-
+    // Perform m random operations on the list
     int m = 100;
-    clock_t start = clock();
     for (int i = 0; i < m; i++) {
         int op = rand() % 3;
         int data = rand() % MAX_VALUE;
@@ -46,55 +47,57 @@ int main() {
                 break;
         }
     }
-    clock_t end = clock();
-    double time_taken = (double) (end - start) / CLOCKS_PER_SEC * 1000;
 
-    printf("Time taken: %f milliseconds\n", time_taken);
-
+    // Print the final list
     print_list(head);
 
     return 0;
 }
 
-
-int Member(struct list_node_s* head_p, int value) {
-    struct list_node_s* curr_p = head_p;
-    while (current != NULL && curr_p->data <value)
-        curr_p =curr_p->next;
-    if (curr_p == NULL || curr_p->data >value) {
-        return 0;
+// Check if a value is in the list
+int Member(node* head, int data) {
+    node* current = head;
+    while (current != NULL) {
+        if (current->data == data) {
+            return 1;
+        }
+        current = current->next;
     }
-    else{
-        return 1;
-    }
+    return 0;
 }
 
-
+// Insert a new value into the list
 void Insert(node** head, int data) {
     if (Member(*head, data)) {
         return;
     }
 
+    node* new_node = (node*) malloc(sizeof(node));
+    new_node->data = data;
+    new_node->next = *head;
+    *head = new_node;
 }
 
+// Delete a value from the list
 void Delete(node** head, int data) {
-    // node* current = *head;
-    // node* prev = NULL;
-    // while (current != NULL) {
-    //     if (current->data == data) {
-    //         if (prev == NULL) {
-    //             *head = current->next;
-    //         } else {
-    //             prev->next = current->next;
-    //         }
-    //         free(current);
-    //         return;
-    //     }
-    //     prev = current;
-    //     current = current->next;
-    // }
+    node* current = *head;
+    node* prev = NULL;
+    while (current != NULL) {
+        if (current->data == data) {
+            if (prev == NULL) {
+                *head = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            free(current);
+            return;
+        }
+        prev = current;
+        current = current->next;
+    }
 }
 
+// Print the contents of the list
 void print_list(node* head) {
     printf("List: ");
     node* current = head;
@@ -104,4 +107,3 @@ void print_list(node* head) {
     }
     printf("\n");
 }
-

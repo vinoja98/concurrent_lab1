@@ -1,5 +1,5 @@
 ## compile serial.c
-gcc serial.c -o serail
+gcc serial.c -o serial
 
 ## run executable
 ./serial
