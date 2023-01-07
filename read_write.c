@@ -9,7 +9,6 @@
 #define NUM_THREADS 1
 int *operationsArray;
 int *dataResults;
-unsigned bit;
 
 typedef struct list_node_s
 {
@@ -22,31 +21,23 @@ struct thread_args
     long memberOps;
     long insertOps;
     long deleteOps;
-    short unsigned seed;
     list_node_s* head;
 };
 
 int Member(list_node_s* head_p, int data);
 int Insert(list_node_s** head_pp, int data);
 int Delete(list_node_s** head_pp, int data);
-pthread_mutex_t mutex_lock;
+pthread_rwlock_t rwlock;
 pthread_t *threadHandles;
 int memberOperations;
 int insertOperations;
 int deleteOperations;
-
-unsigned genUniqueRandNum(unsigned short *lfsr)
-{
-    bit = ((*lfsr >> 0) ^ (*lfsr >> 2) ^ (*lfsr >> 3) ^ (*lfsr >> 5)) & 1;
-    return *lfsr = (*lfsr >> 1) | (bit << 15);
-}
 
 void *threadOperation(void* thread_args) {
     struct thread_args *args = (struct thread_args *)thread_args;
     long memberOps = args->memberOps;
     long insertOps = args->insertOps;
     long deleteOps = args->deleteOps;
-    short unsigned seed = args->seed;
     list_node_s* head = args->head;
 
     clock_t start, end;
@@ -56,28 +47,27 @@ void *threadOperation(void* thread_args) {
         int data = dataResults[i];
         if (operationsArray[i] == 0)
         {   
-            pthread_mutex_lock(&mutex_lock);
+            pthread_rwlock_rdlock(&rwlock);
             Member(head,data);
-            pthread_mutex_unlock(&mutex_lock);
+            pthread_rwlock_unlock(&rwlock);
         }
         else if (operationsArray[i] == 1)
         {   
-            pthread_mutex_lock(&mutex_lock);
+            pthread_rwlock_rdlock(&rwlock);
             Insert(&head,data);
-            pthread_mutex_unlock(&mutex_lock);
+            pthread_rwlock_unlock(&rwlock);
         }
         else if (operationsArray[i] == 2)
         {   
-            pthread_mutex_lock(&mutex_lock);
+            pthread_rwlock_rdlock(&rwlock);
             Delete(&head,data);
-            pthread_mutex_unlock(&mutex_lock);
+            pthread_rwlock_unlock(&rwlock);
         }
     }
 }
 
 int main() {
     int num_samples=97;
-    
     int caseNumber = 0;
     while (caseNumber < 3) {
         float *timeResults = malloc(sizeof(int) * num_samples);
@@ -155,14 +145,12 @@ int main() {
                         if (memberOperations > 0) {
                             operationsArray[i] = 0;
                             memberOperations--;
-                            // printf("op is %d\n", operationsArray[i]);
                             i++;
                         }
                         break;
                     case 1:
                         if (insertOperations > 0) {
                             operationsArray[i] = 1;
-                            // printf("op is %d\n", operationsArray[i]);
                             insertOperations--;
                             i++;
                         }
@@ -170,7 +158,6 @@ int main() {
                     case 2:
                         if (deleteOperations > 0) {
                             operationsArray[i] = 2;
-                            // printf("op is %d\n", operationsArray[i]);
                             deleteOperations--;
                             i++;
                         }
@@ -182,7 +169,7 @@ int main() {
             start = clock();
 
             int threadCount = 1;
-            pthread_mutex_init(&mutex_lock, NULL);
+            pthread_rwlock_init(&rwlock, NULL);
             threadHandles = malloc(threadCount * sizeof(pthread_t));
             for (int t = 0; t < threadCount; t++) {
                 struct thread_args *thread_args_struct = malloc(sizeof(struct thread_args));
@@ -190,7 +177,6 @@ int main() {
                 thread_args_struct->insertOps = insertOperations / threadCount;
                 thread_args_struct->deleteOps = deleteOperations / threadCount;
                 thread_args_struct->head = head;
-                thread_args_struct->seed = t + 1000;
                 pthread_create(&threadHandles[t], NULL, threadOperation, (void *)thread_args_struct);
             }
 
@@ -199,7 +185,7 @@ int main() {
                 pthread_join(threadHandles[t], NULL);
             }
             free(threadHandles);
-            pthread_mutex_destroy(&mutex_lock);
+            pthread_rwlock_destroy(&rwlock);
 
             end = clock();
             execution_time = ((double)(end - start)) / CLOCKS_PER_SEC *1000;
