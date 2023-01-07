@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
-#include <plot.h>
+// #include <plot.h>
 
 #define MAX_VALUE 65535
 #define NUM_THREADS 1
