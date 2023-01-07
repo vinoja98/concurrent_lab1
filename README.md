@@ -1,4 +1,4 @@
-## compile serial.c
+## compile C files
 gcc serial.c -o serial -lm\
 gcc one_mutex_lock.c -o one_mutex_lock -lpthread -lm\
 gcc read_write.c -o rw -lm -lpthread
