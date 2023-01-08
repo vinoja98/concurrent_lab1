@@ -113,7 +113,7 @@ int main() {
                 }
             }
             end = clock();
-            execution_time = ((double)(end - start)) / CLOCKS_PER_SEC *1000 ;
+            execution_time = ((double)(end - start)) / CLOCKS_PER_SEC;
             // printf("time %d\n",r);
             // printf("execution_time is %f\n", execution_time);
             timeResults[r]=execution_time;
