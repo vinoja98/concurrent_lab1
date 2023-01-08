@@ -22,7 +22,6 @@ int Delete(list_node_s** head_pp, int data);
 
 int main() {
     int num_samples=97;
-    // timeResults = malloc(sizeof(int) * num_samples);
     int caseNumber = 0;
     while (caseNumber < 3) {
         timeResults = malloc(sizeof(int) * num_samples);
@@ -63,7 +62,6 @@ int main() {
             int i=0;
             while (memberOperations + insertOperations + deleteOperations > 0) {
                 int op = rand() % 3;
-                // int data = rand() % MAX_VALUE;
                 switch (op) {
                     case 0:
                         if (memberOperations > 0) {
@@ -97,7 +95,6 @@ int main() {
             double execution_time;
             start = clock();
             for (int i = 0; i < m; ++i){
-                // int op = rand() % 3;
                 int data = dataResults[i];
                 if (operationsArray[i] == 0)
                 {
@@ -114,10 +111,8 @@ int main() {
             }
             end = clock();
             execution_time = ((double)(end - start)) / CLOCKS_PER_SEC;
-            // printf("time %d\n",r);
-            // printf("execution_time is %f\n", execution_time);
+
             timeResults[r]=execution_time;
-            
         }
         
         double sum;

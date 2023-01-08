@@ -166,7 +166,6 @@ int main() {
 
 
             execution_time = ((double)(end - start)) / CLOCKS_PER_SEC;
-            // printf("execution_time is %f\n", execution_time);
             timeResults[sample]=execution_time;
         }
  
