@@ -121,9 +121,9 @@ int main() {
 
             switch (caseNumber) {
                 case 0:
-                    memberOperations = m * 0.999;
-                    insertOperations = m * 0.0005;
-                    deleteOperations = m * 0.0005;
+                    memberOperations = m * 0.99;
+                    insertOperations = m * 0.005;
+                    deleteOperations = m * 0.005;
                 case 1:
                     memberOperations = m * 0.9;
                     insertOperations = m * 0.05;
@@ -186,47 +186,78 @@ int main() {
     return 0;
 }
 
-// Check if a value is in the list
-int Member(node* head, int data) {
-    node* current = head;
-    while (current != NULL) {
-        if (current->data == data) {
-            return 1;
-        }
-        current = current->next;
-    }
-    return 0;
-}
+int Member(node* head_p, int value )
+{
+    node *curr_p = head_p;
 
-// Insert a new value into the list
-int Insert(node** head, int data) {
-    if (Member(*head, data)) {
+    while (curr_p != NULL && curr_p->data < value)
+        curr_p = curr_p->next;
+
+    if (curr_p == NULL || curr_p->data > value)
+    {
         return 0;
     }
-
-    node* new_node = (node*) malloc(sizeof(node));
-    new_node->data = data;
-    new_node->next = *head;
-    *head = new_node;
-    return 1;
+    else
+    {
+        return 1;
+    }
 }
 
-// Delete a value from the list
-int Delete(node** head, int data) {
-    node* current = *head;
-    node* prev = NULL;
-    while (current != NULL) {
-        if (current->data == data) {
-            if (prev == NULL) {
-                *head = current->next;
-            } else {
-                prev->next = current->next;
-            }
-            free(current);
-            return 1;
-        }
-        prev = current;
-        current = current->next;
+int Insert(node** head_pp,int value)
+{
+    node *curr_p = *head_pp;
+    node *pred_p = NULL;
+    node *temp_p;
+
+    while (curr_p != NULL && curr_p->data < value)
+    {
+        pred_p = curr_p;
+        curr_p = curr_p->next;
     }
-    return 0;
+    if (curr_p == NULL || curr_p->data > value)
+    {
+        temp_p = malloc(sizeof(struct node));
+        temp_p->data = value;
+        temp_p->next = curr_p;
+        if (pred_p == NULL)
+            *head_pp = temp_p;
+        else
+            pred_p->next = temp_p;
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int Delete(node** head_pp,int value)
+{
+    node *curr_p = *head_pp;
+    node *pred_p = NULL;
+
+    while (curr_p != NULL && curr_p->data < value)
+    {
+        pred_p = curr_p;
+        curr_p = curr_p->next;
+    }
+
+    if (curr_p != NULL && curr_p->data == value)
+    {
+        if (pred_p == NULL)
+        {
+            *head_pp = curr_p->next;
+            free(curr_p);
+        }
+        else
+        {
+            pred_p->next = curr_p->next;
+            free(curr_p);
+        }
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
