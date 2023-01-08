@@ -9,7 +9,6 @@
 #define NUM_THREADS 1
 int *operationsArray;
 int *dataResults;
-unsigned bit;
 
 // Define a node structure
 typedef struct node {
@@ -28,7 +27,7 @@ struct thread_args
 int Member(node* head_p, int data);
 int Insert(node** head_pp, int data);
 int Delete(node** head_pp, int data);
-pthread_mutex_t mutex_lock;
+pthread_rwlock_t rwlock;
 pthread_t *threadHandles;
 int memberOperations;
 int insertOperations;
@@ -45,21 +44,21 @@ void *threadOperation(void* thread_args) {
         int data = dataResults[threadId];
         if (operationsArray[threadId] == 0)
         {   
-            pthread_mutex_lock(&mutex_lock);
+            pthread_rwlock_rdlock(&rwlock);
             Member(head,data);
-            pthread_mutex_unlock(&mutex_lock);
+            pthread_rwlock_unlock(&rwlock);
         }
         else if (operationsArray[threadId] == 1)
         {   
-            pthread_mutex_lock(&mutex_lock);
+            pthread_rwlock_rdlock(&rwlock);
             Insert(&head,data);
-            pthread_mutex_unlock(&mutex_lock);
+            pthread_rwlock_unlock(&rwlock);
         }
         else if (operationsArray[threadId] == 2)
-        {
-            pthread_mutex_lock(&mutex_lock);
+        {   
+            pthread_rwlock_rdlock(&rwlock);
             Delete(&head,data);
-            pthread_mutex_unlock(&mutex_lock);
+            pthread_rwlock_unlock(&rwlock);
         }
         threadId += threadCount;
     }
@@ -143,9 +142,9 @@ int main() {
             double execution_time;
             threadHandles = malloc(threadCount * sizeof(pthread_t));
 
-
-            start = clock();           
-            pthread_mutex_init(&mutex_lock, NULL);
+            
+            start = clock();
+            pthread_rwlock_init(&rwlock, NULL);
             
             for (int t = 0; t < threadCount; t++) {
                 struct thread_args *thread_args_struct = malloc(sizeof(struct thread_args));
@@ -161,11 +160,11 @@ int main() {
                 pthread_join(threadHandles[t], NULL);
             }
             free(threadHandles);
-            pthread_mutex_destroy(&mutex_lock);
+            pthread_rwlock_destroy(&rwlock);
 
             end = clock();
 
-            
+
             execution_time = ((double)(end - start)) / CLOCKS_PER_SEC *1000;
             // printf("execution_time is %f\n", execution_time);
             timeResults[sample]=execution_time;
@@ -193,7 +192,7 @@ int Member(node* head_p, int value )
 
     while (curr_p != NULL && curr_p->data < value)
         curr_p = curr_p->next;
-        
+
     if (curr_p == NULL || curr_p->data > value)
     {
         return 0;
