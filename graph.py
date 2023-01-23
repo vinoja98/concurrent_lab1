@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 X = ['1','2','4','8']
-serial = [0.100027,0,0,0]
-one_mutex = [0.144467,0.061615,0.027435,0.013708]
-read_write_lock = [0.135741,0.039784,0.016597,0.015902]
+serial = [0.148263,0,0,0]
+one_mutex = [0.214852,0.094009,0.041816,0.021246]
+read_write_lock = [0.212615,0.068771,0.021711,0.021565]
 
 X_axis = np.arange(len(X))
 
@@ -15,7 +15,7 @@ plt.bar(X_axis + 0.2, read_write_lock, 0.2, label = 'Read Write Lock')
 plt.xticks(X_axis, X)
 plt.xlabel('Number of Threads', fontsize = 10)
 plt.ylabel('Average Execution Time (Seconds)', fontsize = 10)
-plt.title('Graph of Average Execution Time vs. Number of Threads:  Case 02', fontsize = 12)
+plt.title('Graph of Average Execution Time vs. Number of Threads:  Case 03', fontsize = 12)
 plt.legend()
-plt.savefig('graphs/Case 02/Case 02.png')
+plt.savefig('graphs/Case 03/Case 03.png')
 plt.show()
