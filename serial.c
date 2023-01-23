@@ -21,7 +21,7 @@ int Insert(list_node_s** head_pp, int data);
 int Delete(list_node_s** head_pp, int data);
 
 int main() {
-    int num_samples=97;
+    int num_samples=385;
     int caseNumber = 0;
     while (caseNumber < 3) {
         timeResults = malloc(sizeof(int) * num_samples);
