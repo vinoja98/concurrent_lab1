@@ -136,7 +136,7 @@ int main() {
             operationsArray = malloc(sizeof(int) * m);
             setOrderOfOperations(memberOperations, insertOperations, deleteOperations, operationsArray);
 
-            int threadCount = 4;
+            int threadCount = 2;
             int threadOperations = m;
             clock_t start, end;
             double execution_time;
