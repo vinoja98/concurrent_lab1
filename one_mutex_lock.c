@@ -40,7 +40,6 @@ void *threadOperation(void* thread_args) {
     node* head = args->head;
     unsigned short threadId = args->threadId;
     long threadCount = args->threadCount;
-
     while(threadId < threadOperations) {
         int data = dataResults[threadId];
         if (operationsArray[threadId] == 0)
@@ -137,8 +136,8 @@ int main() {
             operationsArray = malloc(sizeof(int) * m);
             setOrderOfOperations(memberOperations, insertOperations, deleteOperations, operationsArray);
 
-            int threadCount = 8;
-            int threadOperations = m / threadCount;
+            int threadCount = 4;
+            int threadOperations = m;
             clock_t start, end;
             double execution_time;
             threadHandles = malloc(threadCount * sizeof(pthread_t));
