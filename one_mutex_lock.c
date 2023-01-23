@@ -96,7 +96,7 @@ void setOrderOfOperations(long memberOperations,long insertOperations,long delet
 }
 
 int main() {
-    int num_samples=97;
+    int num_samples=385;
     for (int caseNumber = 0; caseNumber < 3; caseNumber++) {
         float *timeResults = malloc(sizeof(int) * num_samples);
         for (int sample = 0; sample < num_samples; sample++)
