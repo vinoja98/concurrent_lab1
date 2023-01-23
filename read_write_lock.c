@@ -137,7 +137,7 @@ int main() {
             setOrderOfOperations(memberOperations, insertOperations, deleteOperations, operationsArray);
 
             int threadCount = 8;
-            int threadOperations = m / threadCount;
+            int threadOperations = m;
             clock_t start, end;
             double execution_time;
             threadHandles = malloc(threadCount * sizeof(pthread_t));
