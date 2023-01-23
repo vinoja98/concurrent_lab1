@@ -14,3 +14,5 @@ gcc read_write_lock.c -o read_write_lock -lpthread -lm
 ./one_mutex_lock
 </br></br>
 ./read_write_lock.c
+
+**Change threadCount in one_mutex_lock.c and read_write_lock.c to execute program for different number of threads**
