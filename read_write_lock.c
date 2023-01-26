@@ -50,13 +50,13 @@ void *threadOperation(void* thread_args) {
         }
         else if (operationsArray[threadId] == 1)
         {   
-            pthread_rwlock_rdlock(&rwlock);
+            pthread_rwlock_wrlock(&rwlock);
             Insert(&head,data);
             pthread_rwlock_unlock(&rwlock);
         }
         else if (operationsArray[threadId] == 2)
         {   
-            pthread_rwlock_rdlock(&rwlock);
+            pthread_rwlock_wrlock(&rwlock);
             Delete(&head,data);
             pthread_rwlock_unlock(&rwlock);
         }
